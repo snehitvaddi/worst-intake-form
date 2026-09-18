@@ -6,6 +6,9 @@
     "start": "node server.mjs"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "latest"
+    "@anthropic-ai/sdk": "^0.127.0"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }

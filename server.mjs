@@ -17,6 +17,8 @@ import Anthropic from "@anthropic-ai/sdk";
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const PORT = Number(process.env.PORT) || 4173;
+// Hosted (a platform sets PORT / NODE_ENV=production): accept outside traffic. Locally: loopback only.
+const HOST = process.env.HOST || (process.env.PORT || process.env.NODE_ENV === "production" ? "0.0.0.0" : "127.0.0.1");
 const MAX_BODY_BYTES = 4 * 1024 * 1024;
 const POSES = ["elephant", "giraffe", "flamingo", "t-rex", "teapot"];
 
@@ -30,6 +32,7 @@ const TYPES = {
   ".png": "image/png",
   ".jpg": "image/jpeg",
   ".svg": "image/svg+xml",
+  ".mov": "video/quicktime",
 };
 
 const VERDICT_SCHEMA = {
@@ -160,6 +163,6 @@ http
     res.writeHead(405);
     res.end();
   })
-  .listen(PORT, "127.0.0.1", () => {
-    console.log(`Worst intake form ever: http://localhost:${PORT}`);
+  .listen(PORT, HOST, () => {
+    console.log(`Worst intake form ever: http://${HOST === "0.0.0.0" ? "localhost" : HOST}:${PORT}`);
   });
