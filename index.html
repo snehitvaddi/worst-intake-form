@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>New Patient Intake — Lakeside Family Clinic</title>
+<style>
+  :root {
+    --ink: #1c2733;
+    --muted: #6b7a89;
+    --line: #d9e0e7;
+    --bg: #f3f6f9;
+    --card: #ffffff;
+    --brand: #0f6e84;
+    --go: #16a34a;
+    --go-dark: #12813b;
+    --danger: #c62828;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body {
+    margin: 0;
+    font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+  }
+
+  /* ---------- Layout ---------- */
+  main { max-width: 760px; margin: 28px auto 80px; padding: 0 16px; }
+  header.page h1 { margin: 0 0 4px; font-size: 26px; }
+  header.page p  { margin: 0 0 22px; color: var(--muted); }
+  fieldset {
+    margin: 0 0 18px;
+    padding: 20px 22px 22px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+  }
+  legend {
+    padding: 0 8px;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--brand);
+    letter-spacing: .02em;
+  }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 16px; }
+  .full { grid-column: 1 / -1; }
+  label.field { display: block; font-size: 14px; font-weight: 600; }
+  label.field span.req { color: var(--danger); }
+  input[type=text], input[type=email], input[type=tel], input[type=date], select, textarea {
+    display: block;
+    width: 100%;
+    margin-top: 5px;
+    padding: 9px 11px;
+    font: inherit;
+    color: inherit;
+    background: #fff;
+    border: 1px solid #b9c4cf;
+    border-radius: 6px;
+  }
+  textarea { min-height: 84px; resize: vertical; }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--brand); outline-offset: 1px; }
+  .checks { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px 14px; margin-top: 8px; }
+  .checks label, .radios label { font-size: 15px; font-weight: 400; display: flex; gap: 8px; align-items: center; }
+  .radios { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 8px; }
+  .hint { font-size: 13px; color: var(--muted); font-weight: 400; }
+  .pain { display: flex; align-items: center; gap: 12px; margin-top: 6px; }
+  .pain input { flex: 1; }
+  .pain output { font-weight: 700; min-width: 2ch; text-align: right; }
+
+  /* ---------- Actions (intentionally inverted hierarchy) ---------- */
+  .actions { margin-top: 26px; text-align: center; }
+  .btn-clear {
+    display: block;
+    width: 100%;
+    padding: 18px 24px;
+    font-family: inherit;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: .02em;
+    color: #fff;
+    background: var(--go);
+    border: 0;
+    border-radius: 10px;
+    box-shadow: 0 6px 16px rgba(22, 163, 74, .35);
+    cursor: pointer;
+    transition: background .15s, transform .05s;
+  }
+  .btn-clear:hover  { background: var(--go-dark); }
+  .btn-clear:active { transform: translateY(1px); }
+  .btn-submit {
+    margin-top: 14px;
+    padding: 0;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.2;
+    color: #9aa6b2;
+    text-decoration: underline;
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+  .btn-submit:hover { color: var(--muted); }
+
+  .done {
+    padding: 40px 24px;
+    text-align: center;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+  }
+  .done h2 { margin: 0 0 6px; color: var(--go-dark); }
+  .done p { margin: 0; color: var(--muted); }
+  .done-stats { margin: 22px auto 0; padding: 0; max-width: 460px; list-style: none; text-align: left; font-size: 14px; }
+  .done-stats li { padding: 8px 0; border-top: 1px solid var(--line); }
+  .done-rx { margin: 22px auto 0; max-width: 460px; padding: 14px 16px; text-align: left; font-size: 14px; background: #fff8e6; border: 1px dashed #e0b252; border-radius: 8px; }
+  .done-rx span { color: var(--muted); }
+
+  @media (max-width: 600px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<main>
+  <header class="page">
+    <h1>New Patient Intake</h1>
+    <p>Lakeside Family Clinic · Please complete every section before your session expires. Progress is not saved.</p>
+  </header>
+
+  <form id="intake" autocomplete="off" novalidate>
+    <fieldset>
+      <legend>1. About You</legend>
+      <div class="grid">
+        <label class="field">First name <span class="req">*</span>
+          <input type="text" name="firstName" required>
+        </label>
+        <label class="field">Last name <span class="req">*</span>
+          <input type="text" name="lastName" required>
+        </label>
+        <label class="field">Date of birth <span class="req">*</span>
+          <input type="date" name="dob" required>
+        </label>
+        <label class="field">Email
+          <input type="email" name="email">
+        </label>
+        <label class="field full">Mobile phone <span class="req">*</span>
+          <input type="tel" name="phone" required>
+        </label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>2. Emergency Contact</legend>
+      <div class="grid">
+        <label class="field">Full name <span class="req">*</span>
+          <input type="text" name="ecName" required>
+        </label>
+        <label class="field">Phone <span class="req">*</span>
+          <input type="tel" name="ecPhone" required>
+        </label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>3. Reason for Visit</legend>
+      <div class="grid">
+        <label class="field full">What brings you in today? <span class="req">*</span>
+          <textarea name="reason" required></textarea>
+        </label>
+        <div class="field full">
+          <label class="field" for="pain">Current pain level</label>
+          <div class="pain">
+            <span class="hint">0</span>
+            <input type="range" id="pain" name="pain" min="0" max="10" value="0">
+            <span class="hint">10</span>
+            <output id="painOut" for="pain">0</output>
+          </div>
+        </div>
+        <div class="field full">
+          <span style="font-size:14px;font-weight:600">Current symptoms <span class="hint">(mark all that apply)</span></span>
+          <div class="checks">
+            <label><input type="checkbox" name="symptoms" value="fever"> Fever / chills</label>
+            <label><input type="checkbox" name="symptoms" value="cough"> Cough</label>
+            <label><input type="checkbox" name="symptoms" value="headache"> Headache</label>
+            <label><input type="checkbox" name="symptoms" value="dizzy"> Dizziness</label>
+            <label><input type="checkbox" name="symptoms" value="fatigue"> Fatigue</label>
+            <label><input type="checkbox" name="symptoms" value="rash"> Rash</label>
+          </div>
+        </div>
+        <label class="field full">Allergies <span class="hint">(medications, foods, latex…)</span>
+          <input type="text" name="allergies">
+        </label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>4. Consent</legend>
+      <div class="checks" style="grid-template-columns:1fr">
+        <label><input type="checkbox" name="consentTreat" required> I consent to evaluation and treatment. <span class="req" style="color:var(--danger)">*</span></label>
+        <label><input type="checkbox" name="consentPrivacy" required> I acknowledge receipt of the Notice of Privacy Practices. <span class="req" style="color:var(--danger)">*</span></label>
+      </div>
+      <div class="grid" style="margin-top:14px">
+        <label class="field full">Signature <span class="hint">(type full name)</span> <span class="req">*</span>
+          <input type="text" name="signature" required>
+        </label>
+      </div>
+    </fieldset>
+
+    <div class="actions">
+      <button type="button" class="btn-clear" id="clearBtn">Clear Form</button>
+      <button type="submit" class="btn-submit">submit</button>
+    </div>
+  </form>
+</main>
+
+<script>
+// Plain form behaviour only. Every gag lives in features/<id>.js (see PROMPT.md).
+(function () {
+  var form = document.getElementById('intake');
+  var painOut = document.getElementById('painOut');
+
+  // Nothing is ever persisted; also defeat browser form-restore on reload / bfcache.
+  window.addEventListener('pageshow', function () {
+    form.reset();
+    painOut.textContent = '0';
+  });
+
+  form.pain.addEventListener('input', function () {
+    painOut.textContent = form.pain.value;
+  });
+
+  // The big friendly button: wipes everything instantly, no confirmation.
+  document.getElementById('clearBtn').addEventListener('click', function () {
+    form.reset();
+    painOut.textContent = '0';
+    window.scrollTo({ top: 0 });
+  });
+
+  // Stubbed submit: no backend, just log the payload. Gags get a veto first.
+  var submitting = false;
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    if (submitting) return;
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    submitting = true;
+    var allowed = window.Gags ? await window.Gags.runSubmitChecks() : true;
+    submitting = false;
+    if (!allowed || !form.isConnected) return;
+
+    var data = {};
+    new FormData(form).forEach(function (v, k) {
+      if (k in data) data[k] = [].concat(data[k], v);
+      else data[k] = v;
+    });
+    console.log('[stub] intake submitted', data);
+    var lines = window.Gags ? window.Gags.stats() : [];
+    document.dispatchEvent(new CustomEvent('intake:submitted', { detail: data }));
+
+    var done = document.createElement('div');
+    done.className = 'done';
+    done.innerHTML =
+      '<h2>Intake received</h2>' +
+      '<p>Thank you. Please have a seat — a staff member will call you shortly.</p>' +
+      '<ul class="done-stats"></ul>' +
+      '<div class="done-rx"><strong>Rx added to your visit:</strong> anxiety medication.<br>' +
+      '<span>Indication: acute form-related stress, observed during intake. ' +
+      'Pickup window: 5:00, decreasing randomly.</span></div>';
+    lines.forEach(function (line) {
+      var li = document.createElement('li');
+      li.textContent = line;
+      done.querySelector('.done-stats').appendChild(li);
+    });
+    form.replaceWith(done);
+    window.scrollTo({ top: 0 });
+  });
+})();
+</script>
+
+<!-- Gag registry first, then one script per feature. Disable any with ?off=id1,id2 -->
+<script src="gags.js"></script>
+<script src="features/timer.js"></script>
+<script src="features/pencil.js"></script>
+<script src="features/scream.js"></script>
+<script src="features/slots.js"></script>
+<script src="features/records.js"></script>
+<script src="features/ads.js"></script>
+<script src="features/sounds.js"></script>
+<script src="features/dodge.js"></script>
+<script src="features/otp.js"></script>
+<script src="features/human.js"></script>
+<script src="features/captcha.js"></script>
+<script src="features/nag.js"></script>
+</body>
+</html>
